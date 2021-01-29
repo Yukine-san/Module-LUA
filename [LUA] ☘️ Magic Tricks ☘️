@@ -1,0 +1,210 @@
+--Auteur: Papaneige#0000
+ 
+function main()
+tfm.exec.disableAutoNewGame(true)
+tfm.exec.disableAutoShaman(true)
+tfm.exec.newGame(7593531)
+tfm.exec.setUIMapName("<VP>☘️ <R>Magic Tricks <VP>☘ <BL>| <I> <V>By Papaneige#0000")
+tfm.exec.disableAutoScore(true)
+tfm.exec.disableAfkDeath (true)
+end
+ 
+function eventTextAreaCallback(aide, name, callback)
+ui.addPopup (1, 0, "Bienvenue dans le module <font color='#578710'> ☘️ </font><font color='#DB270F'> Magic Tricks </font> <font color='#578710'> ☘ </font>! Dans ce module vous devrez faire preuve d'agilité et de rapidité si vous voulez être le premier à remporter la partie! Mais prenez garde, votre parcours ne sera pas de tout repos. En effet, le module a été ensorcelé et vous jettera des sorts pour embusquer votre chemin vers la gloire. Heureusement, le développeur du module a été gentil et vous laisse 3 tp pour vous aider dans votre quête! Attention utilisez-les avec parcimonie (il est où?) à l'aide d'un simple clique de souris sur l'écran. <br>Module created by <font color='#2979C6'>Papaneige#0000</font>.</br><br>Special thank to <font color='#66F600'>Tortugreen#0000</font> for his help with tp.</br>", name, 165, 150, 490, true)
+end
+ 
+souris=0
+play=0
+reste=4
+maps = {7580643,7579987,7580638,7582312,7582323,7582327,7582481,7582478,7582565,7582869,7582936}
+params={nombreTP=0}
+ 
+function eventNewPlayer(name)
+ 
+ui.removeTextArea(1,nil)
+ui.addTextArea(0, "<a href='event:aide'>?</a>", name, 5, 25,10,15,0x49FFBA,0xFFFFFF,0.4,true)
+system.bindMouse (name, true)
+tfm.exec.respawnPlayer(name)
+souris=souris+1
+reste=reste-1
+if souris>=4 then
+tfm.exec.newGame(maps[math.random(#maps)])
+tfm.exec.disableAutoShaman(true)
+ui.removeTextArea (6, nil)
+play=1
+elseif play==0 then
+ui.addTextArea(6, "<p align='center'><font color='#FBF600' size='20'>Il manque " ..reste.. " souris pour commencer la partie.</font></p>", nil, 5, 138, 1000, 50, true)
+end
+end
+ 
+for name in pairs(tfm.get.room.playerList) do
+params[name]={nombreTP=0}
+end
+ 
+for name in pairs(tfm.get.room.playerList) do
+eventNewPlayer(name)
+tfm.exec.disableAutoShaman(true)
+function eventMouse (name,xp, yp)
+if params[name].nombreTP<=2 and (math.abs(xp-tfm.get.room.playerList[name].x) <=100) and (math.abs(yp-tfm.get.room.playerList[name].y) <=100) or (math.abs(xp-tfm.get.room.playerList[name].x) <=-100) and (math.abs(yp-tfm.get.room.playerList[name].y) <=-100) then
+tfm.exec.movePlayer (name, xp, yp, false, 0, 0, false)
+params[name].nombreTP=params[name].nombreTP+1
+elseif params[name].nombreTP == 3 then
+ui.addTextArea(7, "<p align='center'><font color='#F21616' size='20'>Tu as déjà utilisé tes 3 tp !</font></p>", name, -75, 20, 1000, 50, true)
+end
+end
+end
+ 
+function eventPlayerLeft(name)
+souris = souris-1
+if souris<=3 and play==1 then
+tfm.exec.newGame(7593531)
+play=0
+tfm.exec.addConjuration (0, 0,0)
+reste=reste+1
+ui.addTextArea(6, "<p align='center'><font color='#FBF600' size='20'>Il manque " ..reste.. " souris pour commencer la partie.</font></p>", nil, 5, 138, 1000, 50, true)
+ui.removeTextArea (1, nil)
+ui.removeTextArea (2, nil)
+ui.removeTextArea (3, nil)
+ui.removeTextArea (4, nil)
+elseif souris<=3 and play==0 then
+reste=reste+1
+ui.addTextArea(6, "<p align='center'><font color='#FBF600' size='20'>Il manque " ..reste.. " souris pour commencer la partie.</font></p>", nil, 5, 138, 1000, 50, true)
+ui.removeTextArea (1, nil)
+ui.removeTextArea (2, nil)
+ui.removeTextArea (3, nil)
+ui.removeTextArea (4, nil)
+end
+end
+ 
+function eventNewGame()
+tfm.exec.disableAutoNewGame(true)
+tfm.exec.disableAutoShaman(true)
+tfm.exec.setUIMapName("<VP>☘️ <R>Magic Tricks <VP>☘ <BL>| <I> <V>By Papaneige#0000")
+tfm.exec.disableAutoScore(true)
+tfm.exec.disableAfkDeath (true)
+end
+ 
+function eventPlayerWon(name)
+tfm.exec.respawnPlayer(name)
+if v==0 then
+params[name].nombreTP=0
+ui.addTextArea(1, "<p align='center'><font color='#FBF600' size='20'>Bravo à " ..name.. " qui finit premier!</font></p>", nil, -100, 200, 1000, 50, true)
+v=1
+tfm.exec.displayParticle(29,30,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,80,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,140,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,190,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,240,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,290,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,340,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,390,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,420,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,490,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,520,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,590,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,620,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,690,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,720,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,790,50,2,2,1,1,nil)
+ui.removeTextArea (7, nil)
+elseif v==1 then
+ui.removeTextArea (1, nil)
+ui.addTextArea(2, "<p align='center'><font color='#FBF600' size='20'>Bravo à " ..name.." qui finit 2ème!</font></p>", nil, -100, 200, 1000, 50, true)
+v=2
+tfm.exec.displayParticle(29,30,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,80,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,140,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,190,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,240,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,290,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,340,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,390,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,420,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,490,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,520,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,590,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,620,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,690,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,720,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,790,50,2,2,1,1,nil)
+elseif v==2 then
+ui.removeTextArea (2, nil)
+ui.addTextArea(3, "<p align='center'><font color='#FBF600' size='20'>Bravo à " ..name.." qui finit 3ème!</font></p>", nil, -100, 200, 1000, 50, true)
+v=3
+tfm.exec.displayParticle(29,30,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,80,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,140,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,190,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,240,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,290,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,340,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,390,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,420,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,490,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,520,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,590,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,620,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,690,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,720,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,790,50,2,2,1,1,nil)
+elseif v==3 then
+ui.removeTextArea (3, nil)
+ui.addTextArea(4, "<p align='center'><font color='#FBF600' size='20'>Bravo à " ..name, nil, -100, 200, 1000, 50, true)
+tfm.exec.displayParticle(29,30,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,80,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,140,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,190,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,240,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,290,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,340,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,390,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,420,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,490,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,520,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,590,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,620,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,690,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,720,50,2,2,1,1,nil)
+tfm.exec.displayParticle(29,790,50,2,2,1,1,nil)
+end
+end
+ 
+function eventPlayerDied(name)
+tfm.exec.respawnPlayer(name)
+end
+ 
+maps = {7580643,7579987,7580638,7582312,7582323,7582327,7582481,7582478,7582565,7582869,7582936}
+conjy = {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,}
+conjx = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79}
+v = 0
+ 
+function eventLoop(timePast, timeLeft)
+if play==1 then
+if timeLeft <= 220000 then
+tfm.exec.addConjuration (conjx[math.random(#conjx)], conjy[math.random(#conjy)], 1000000)
+if timeLeft <= 115000 then
+ui.removeTextArea (5, nil)
+if timeLeft <= 100 and v==0 then
+ui.addTextArea(5, "<p align='center'><font color='#FBF600' size='20'>Personne n'a gagné cette fois!", nil, 150, 200, 500, 50, true)
+tfm.exec.newGame(maps[math.random(#maps)])
+v=0
+ui.removeTextArea (1, nil)
+ui.removeTextArea (2, nil)
+ui.removeTextArea (3, nil)
+ui.removeTextArea (4, nil)
+ui.removeTextArea (7, nil)
+elseif timeLeft <= 0 then
+tfm.exec.newGame(maps[math.random(#maps)])
+v=0
+ui.removeTextArea (1, nil)
+ui.removeTextArea (2, nil)
+ui.removeTextArea (3, nil)
+ui.removeTextArea (4, nil)
+ui.removeTextArea (7, nil)
+end
+end
+end
+end
+end
+ 
+main ()
